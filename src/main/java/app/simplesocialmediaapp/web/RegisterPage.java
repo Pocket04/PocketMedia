@@ -2,6 +2,8 @@ package app.simplesocialmediaapp.web;
 
 import app.simplesocialmediaapp.web.modules.SiteFooter;
 import app.simplesocialmediaapp.web.modules.SiteHeader;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
+import com.vaadin.flow.spring.security.AuthenticationContext;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import com.vaadin.flow.component.html.H1;
 import app.simplesocialmediaapp.users.services.UserService;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.flow.component.button.Button;
 
 @Route("register")
+@AnonymousAllowed
 public class RegisterPage extends VerticalLayout {
 
     private final UserService userService;
@@ -34,13 +37,13 @@ public class RegisterPage extends VerticalLayout {
     private VerticalLayout div = new VerticalLayout(h1, usernameField, emailField, passwordField, registerButton);
 
     @Autowired
-    public RegisterPage(UserService userService) {
+    public RegisterPage(UserService userService, AuthenticationContext context) {
         this.userService = userService;
         setSizeFull();
 
         addClassName("back");
 
-        SiteHeader header = new SiteHeader("Register", "/login", "Login");
+        SiteHeader header = new SiteHeader(context);
         SiteFooter footer = new SiteFooter();
 
         usernameField.setRequired(true);
@@ -61,13 +64,11 @@ public class RegisterPage extends VerticalLayout {
 
         add(header, div, footer);
         addClassNames(LumoUtility.AlignItems.CENTER, LumoUtility.JustifyContent.CENTER);
-
     }
 
     private void register(){
-        CreateUserRequest dto = new CreateUserRequest(emailField.getValue(), usernameField.getValue(), passwordField.getValue());
-
         try{
+            CreateUserRequest dto = new CreateUserRequest(emailField.getValue(), usernameField.getValue(), passwordField.getValue());
             userService.createUser(dto);
             Notification.show("Registered Successfully!");
         }catch (Exception e){
