@@ -6,6 +6,8 @@ import app.simplesocialmediaapp.web.requests.CreatePostRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PostService {
 
@@ -20,8 +22,12 @@ public class PostService {
         Post post = new Post();
         post.setBody(dto.getBody());
         post.setHeader(dto.getHeader());
-        post.setPoster(dto.getPoster());
 
         return postRepository.save(post);
     }
+
+    public List<Post> getAllPosts(){
+        return postRepository.findAll();
+    }
+
 }

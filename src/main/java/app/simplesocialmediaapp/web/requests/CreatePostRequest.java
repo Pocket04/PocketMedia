@@ -4,25 +4,17 @@ import app.simplesocialmediaapp.users.models.User;
 
 public class CreatePostRequest {
 
-    private User poster;
 
     private String header;
 
     private String body;
 
-    public CreatePostRequest(User poster, String header, String body) {
-        this.poster = poster;
+    public CreatePostRequest(String header, String body) {
         this.header = header;
         this.body = body;
     }
 
-    public User getPoster() {
-        return poster;
-    }
 
-    public void setPoster(User poster) {
-        this.poster = poster;
-    }
 
     public String getHeader() {
         return header;
